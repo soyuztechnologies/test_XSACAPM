@@ -1,7 +1,9 @@
 # auto generated wildcard
 db/.env
+node_modules
+
+# auto generated wildcard
+anubhav_btp_hana/db/.env
 
 # added by cds deploy
 default-env.json
-node_modules
-gen

@@ -1,7 +1,9 @@
-using { anubhav.db.master, anubhav.db.transaction, anubhav.db.CDSView } from '../db/datamodel';
+using { anubhav.db.master, anubhav.db.transaction, anubhav.db.CDSView, CV_PURCHASE } from '../db/datamodel';
 
 
 service CatalogService@(path:'/CatalogService') {
+
+    function sleep() returns Boolean;
 
     entity EmployeeSet as projection on master.employees;
 
@@ -30,5 +32,7 @@ service CatalogService@(path:'/CatalogService') {
     entity ProductAggregation as projection on CDSView.CProductValuesView excluding{
         ProductId
     };
+
+    entity PurchaseOrders as projection on CV_PURCHASE;
 
 }

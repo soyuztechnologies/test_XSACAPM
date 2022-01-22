@@ -8,8 +8,10 @@
     "dependencies": {
         "@sap/cds": "^5",
         "@sap/cds-odata-v2-adapter-proxy": "^1.8.5",
+        "@sap/hdbext": "^7.5.0",
         "express": "^4",
-        "hdb": "^0.18.3"
+        "hdb": "^0.18.3",
+        "sap-hdbext-promisfied": "^2.202201.1"
     },
     "devDependencies": {
         "@sap/hdi-deploy": "^4.2.3"
@@ -44,7 +46,7 @@
     },
     "cds": {
         "build": {
-            "target": "./gen"
+            "target": "."
         },
         "requires": {
             "db": {
