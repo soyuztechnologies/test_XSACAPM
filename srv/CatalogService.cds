@@ -1,12 +1,13 @@
-using { anubhav.db.master, anubhav.db.transaction, anubhav.db.CDSView, CV_PURCHASE } from '../db/datamodel';
+using { anubhav.db.master, anubhav.db.transaction, anubhav.db.CDSView, CV_PURCHASE  } from '../db/datamodel';
 
 
 service CatalogService@(path:'/CatalogService') {
 
     function sleep() returns Boolean;
-
+    //@readonly
+    @Capabilities : { Insertable, Updatable, Deletable }
     entity EmployeeSet as projection on master.employees;
-
+    @readonly
     entity AddressSet as projection on master.address;
 
     entity ProductSet as projection on master.product;
@@ -18,6 +19,9 @@ service CatalogService@(path:'/CatalogService') {
     ) as projection on transaction.purchaseorder{
         *,
         Items: redirected to POItems
+    }actions{
+        function largestOrder() returns array of POs;
+        action boost();
     }
 
     entity POItems @( title : '{i18n>poItems}' )
@@ -34,5 +38,5 @@ service CatalogService@(path:'/CatalogService') {
     };
 
     entity PurchaseOrders as projection on CV_PURCHASE;
-
 }
+

@@ -5,6 +5,12 @@
       "kind": "service",
       "@path": "/CatalogService"
     },
+    "CatalogService.sleep": {
+      "kind": "function",
+      "returns": {
+        "type": "cds.Boolean"
+      }
+    },
     "CatalogService.EmployeeSet": {
       "kind": "entity",
       "projection": {
@@ -909,6 +915,80 @@
           "@title": "PO_ITEM_POS: PO_ITEM_POS",
           "key": true,
           "type": "cds.Integer"
+        }
+      }
+    },
+    "CatalogService.PurchaseOrdByVendors": {
+      "kind": "entity",
+      "projection": {
+        "from": {
+          "ref": [
+            "CV_PURCHASE_ORD"
+          ]
+        }
+      },
+      "elements": {
+        "PO_ID": {
+          "@title": "PO_ID: PO_ID",
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "PARTNER_GUID_NODE_KEY": {
+          "@title": "PARTNER_GUID_NODE_KEY: PARTNER_GUID_NODE_KEY",
+          "key": true,
+          "type": "cds.String",
+          "length": 32
+        },
+        "COUNTRY": {
+          "@title": "COUNTRY: COUNTRY",
+          "key": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "EMAIL": {
+          "@title": "EMAIL: EMAIL",
+          "key": true,
+          "type": "cds.String",
+          "length": 80
+        },
+        "COMPANY": {
+          "@title": "COMPANY: COMPANY",
+          "key": true,
+          "type": "cds.String",
+          "length": 250
+        },
+        "CITY": {
+          "@title": "CITY: CITY",
+          "key": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "SUPPLIER_ID": {
+          "@title": "SUPPLIER_ID: SUPPLIER_ID",
+          "key": true,
+          "type": "cds.String",
+          "length": 32
+        },
+        "GROSS_AMOUNT": {
+          "@title": "GROSS_AMOUNT: GROSS_AMOUNT",
+          "key": true,
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "NET_AMOUNT": {
+          "@title": "NET_AMOUNT: NET_AMOUNT",
+          "key": true,
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "TAX_AMOUNT": {
+          "@title": "TAX_AMOUNT: TAX_AMOUNT",
+          "key": true,
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
         }
       }
     },
@@ -2424,6 +2504,75 @@
           "@title": "PO_ITEM_POS: PO_ITEM_POS",
           "key": true,
           "type": "cds.Integer"
+        }
+      }
+    },
+    "CV_PURCHASE_ORD": {
+      "kind": "entity",
+      "@cds.persistence.calcview": true,
+      "@cds.persistence.exists": true,
+      "elements": {
+        "PO_ID": {
+          "@title": "PO_ID: PO_ID",
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "PARTNER_GUID_NODE_KEY": {
+          "@title": "PARTNER_GUID_NODE_KEY: PARTNER_GUID_NODE_KEY",
+          "key": true,
+          "type": "cds.String",
+          "length": 32
+        },
+        "COUNTRY": {
+          "@title": "COUNTRY: COUNTRY",
+          "key": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "EMAIL": {
+          "@title": "EMAIL: EMAIL",
+          "key": true,
+          "type": "cds.String",
+          "length": 80
+        },
+        "COMPANY": {
+          "@title": "COMPANY: COMPANY",
+          "key": true,
+          "type": "cds.String",
+          "length": 250
+        },
+        "CITY": {
+          "@title": "CITY: CITY",
+          "key": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "SUPPLIER_ID": {
+          "@title": "SUPPLIER_ID: SUPPLIER_ID",
+          "key": true,
+          "type": "cds.String",
+          "length": 32
+        },
+        "GROSS_AMOUNT": {
+          "@title": "GROSS_AMOUNT: GROSS_AMOUNT",
+          "key": true,
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "NET_AMOUNT": {
+          "@title": "NET_AMOUNT: NET_AMOUNT",
+          "key": true,
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "TAX_AMOUNT": {
+          "@title": "TAX_AMOUNT: TAX_AMOUNT",
+          "key": true,
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
         }
       }
     },

@@ -227,3 +227,4 @@ key     ![NET_AMOUNT]: Decimal(15, 2)  @title: 'NET_AMOUNT: NET_AMOUNT' ;
 key     ![TAX_AMOUNT]: Decimal(15, 2)  @title: 'TAX_AMOUNT: TAX_AMOUNT' ; 
 key     ![PO_ITEM_POS]: Integer  @title: 'PO_ITEM_POS: PO_ITEM_POS' ; 
 }
+
