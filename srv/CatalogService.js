@@ -35,7 +35,7 @@ module.exports = cds.service.impl(
                 const tx = await cds.tx(req);
                 await tx.update(POs).with({
                     GROSS_AMOUNT: { '+=' : 20000 }, NOTE: "Boosted!!"
-                }).where(ID);
+                }).where({ID: ID});
                 return {};
     
             } catch (error) {
