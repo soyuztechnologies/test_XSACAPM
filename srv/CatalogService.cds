@@ -15,13 +15,32 @@ service CatalogService@(path:'/CatalogService') {
     entity BPSet as projection on master.businesspartner;
 
     entity POs @(
+        odata.draft.enabled: true,
         title: '{i18n>poHeader}'
     ) as projection on transaction.purchaseorder{
         *,
-        Items: redirected to POItems
+        Items: redirected to POItems,
+        PO_ID AS PO_ID: String(20),
+        case OVERALL_STATUS
+            when 'N' then 'New'
+            when 'D' then 'Delivered'
+            when 'B' then 'Blocked'
+            when 'P' then 'Paid'
+            end as OVERALL_STATUS : String(20),
+        case OVERALL_STATUS
+            when 'N' then 2
+            when 'D' then 3
+            when 'B' then 1
+            when 'P' then 3
+            end as Criticality: Integer,
+            
     }actions{
         function largestOrder() returns array of POs;
         action boost();
+    }
+
+    annotate POs with{
+        PO_ID @title : '{i18n>PO_ID}'
     }
 
     entity POItems @( title : '{i18n>poItems}' )
