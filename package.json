@@ -51,7 +51,7 @@
     },
     "cds": {
         "build": {
-            "target": "."
+            "target": "./gen"
         },
         "requires": {
             "db": {

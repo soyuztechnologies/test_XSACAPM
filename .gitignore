@@ -1,7 +1,8 @@
 # auto generated wildcard
 db/.env
 node_modules
-
+gen
+mtar_archieve
 # auto generated wildcard
 anubhav_btp_hana/db/.env
 
