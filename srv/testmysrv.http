@@ -28,7 +28,8 @@ Content-Type: application/json
 
 
 ###Read Single Employee Which was just created
-GET http://localhost:4004/CatalogService/EmployeeSet/ccf4fb8f-f784-47e2-b40b-94bc2886071f
+GET http://localhost:4004/CatalogService/EmployeeSet
+Authorization: Basic anubhav:
 
 ###Update the salary for the employee
 PATCH http://localhost:4004/CatalogService/EmployeeSet/ccf4fb8f-f784-47e2-b40b-94bc2886071f

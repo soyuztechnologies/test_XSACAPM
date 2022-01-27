@@ -9,8 +9,11 @@
         "@sap/cds": "^5",
         "@sap/cds-odata-v2-adapter-proxy": "^1.8.5",
         "@sap/hdbext": "^7.5.0",
+        "@sap/xsenv": "^3.2.0",
+        "@sap/xssec": "^3.2.12",
         "express": "^4",
         "hdb": "^0.18.3",
+        "passport": "^0.5.2",
         "sap-hdbext-promisfied": "^2.202201.1"
     },
     "devDependencies": {
@@ -54,6 +57,41 @@
             "target": "./gen"
         },
         "requires": {
+            "uaa": {
+                "kind": "xsuaa"
+            },
+            "auth": {
+                "[production]": {
+                    "strategy": "JWT"
+                },
+                "[development]": {
+                    "strategy": "mock",
+                    "users": {
+                        "anubhav": {
+                            "roles": [
+                                "Admin",
+                                "Viewer"
+                            ],
+                            "userAttributes": {
+                                "BankName": [
+                                    "$UNRESTRICTED"
+                                ]
+                            }
+                        },
+                        "ananya": {
+                            "roles": [
+                                "Viewer"
+                            ],
+                            "userAttributes": {
+                                "BankName": [
+                                    "My Bank of London",
+                                    "My Bank of New York"
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
             "db": {
                 "kind": "hana"
             }

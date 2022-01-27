@@ -1,7 +1,9 @@
 using { anubhav.db.master, anubhav.db.transaction, anubhav.db.CDSView, CV_PURCHASE  } from '../db/datamodel';
 
 
-service CatalogService@(path:'/CatalogService') {
+service CatalogService@(path:'/CatalogService') 
+    @(requires: 'authenticated-user')
+{
 
     function sleep() returns Boolean;
     //@readonly

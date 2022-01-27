@@ -41,3 +41,99 @@ as node module with path as app
 3.4 Right click on mta.yaml and package our app
 3.5 we also added some files to .gitignore
 3.6 right click on mta file and deploy
+
+
+++++++++++++++++Testing and securing our APIs locally
+
+1. Install 3 modules passport, @sap/xsenv, @sap/xssec - project level
+npm install passport && npm install @sap/xsenv && npm install @sap/xssec
+2. Node js security documentation
+https://cap.cloud.sap/docs/node.js/authentication
+Go to CatalogService.cds file and add below
+service CatalogService@(path:'/CatalogService') 
+    @(requires: 'authenticated-user')
+{
+
+Test again the service, the service will fail.
+3. Maintain the users for local testing, go to package.json file and Maintain under requires section below configured
+ "uaa": {
+                "kind": "xsuaa"
+            },
+            "auth": {
+                "[production]": {
+                    "strategy": "JWT"
+                },
+                "[development]": {
+                    "strategy": "mock",
+                    "users": {
+                        "anubhav": {
+                            "roles": [
+                                "Admin",
+                                "Viewer"
+                            ],
+                            "userAttributes": {
+                                "BankName": [
+                                    "$UNRESTRICTED"
+                                ]
+                            }
+                        },
+                        "ananya": {
+                            "roles": [
+                                "Viewer"
+                            ],
+                            "userAttributes": {
+                                "BankName": [
+                                    "My Bank of London",
+                                    "My Bank of New York"
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+4. Now define what roles my application will offer, this is done via a file xs-secuirty.json
+{
+    "xsappname": "pocapapp",
+    "tenant-mode": "dedicated",
+    "scopes": [
+        {
+            "name": "$XSAPPNAME.Viewer",
+            "description": "Viewer"
+        },
+        {
+            "name": "$XSAPPNAME.Admin",
+            "description": "Administrator"
+        }
+    ],
+    "attributes": [
+        {
+            "name": "BankName",
+            "description": "BankName",
+            "valueType": "string"
+        }
+    ],
+    "role-templates": [
+        {
+            "name": "Viewer",
+            "description": "Viewer",
+            "attribute-references": [
+                {
+                    "name": "BankName"
+                }
+            ],
+            "scope-references": [
+                "$XSAPPNAME.Viewer"
+            ]
+        },
+        {
+            "name": "Admin",
+            "description": "Administrator",
+            "scope-references": [
+                "$XSAPPNAME.Admin"
+            ]
+        }
+    ]
+}
+5. Test the service again
+GET http://localhost:4004/CatalogService/EmployeeSet
+Authorization: Basic anubhav:            
