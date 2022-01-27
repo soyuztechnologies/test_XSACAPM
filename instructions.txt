@@ -1,0 +1,37 @@
++++++++++++++++++++++Deployment Session 13
+
+1. went mta.yaml
+mention correct module path gen/srv, gen/db
+in package.json, the build was placed for ./gen
+cds build --production
+
+2. Added ui module to mta.yaml
+as node module with path as app
+
+3. We will configure ui module
+3.1 Make package.json move out of purchase order dir to app folder
+3.2 install app router given by sap npm install @sap/approuter MAKE SURE ITS EXECUTED IN app folder
+3.3 provide app router configuration by drag drop xs-app.json outside from purchaseorder to app folder
+{
+    "welcomeFile": "purchaseorderapp/webapp/",
+    "authenticationMethod": "none",
+    "routes": [
+        { 
+          "source": "^/purchaseorderapp/webapp/(.*)$", 
+          "target": "$1",
+          "csrfProtection": false,
+          "authenticationType": "none",
+          "localDir": "purchaseorderapp/webapp/" 
+        }, 
+        { 
+          "source": "^/(.*)", 
+          "csrfProtection": false,
+          "authenticationType": "none",
+          "destination": "srv-api" 
+        } 
+    ]
+  }
+  
+3.4 Right click on mta.yaml and package our app
+3.5 we also added some files to .gitignore
+3.6 right click on mta file and deploy
