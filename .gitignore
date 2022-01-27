@@ -8,3 +8,8 @@ anubhav_btp_hana/db/.env
 
 # added by cds deploy
 default-env.json
+mta_archives/pocapapp_1.0.2.mtar
+.gitignore
+app/package-lock.json
+package-lock.json
+package-lock.json
