@@ -140,4 +140,12 @@ Authorization: Basic anubhav:
 
 Basics
 https://help.sap.com/viewer/4505d0bdaf4948449b7f7379d24d0f0d/2.0.04/en-US/6d3ed64092f748cbac691abc5fe52985.html#loio6d3ed64092f748cbac691abc5fe52985__section_myf_zzy_2bb
+
+6. Enhance the rule for authorization
+entity EmployeeSet 
+    @(restrict: [ 
+    { grant: ['READ'], to: 'Viewer',
+      where: 'bankName = $user.BankName' },
+    ])
+    as projection on master.employees;    
             

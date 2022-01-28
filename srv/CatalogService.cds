@@ -8,7 +8,12 @@ service CatalogService@(path:'/CatalogService')
     function sleep() returns Boolean;
     //@readonly
     @Capabilities : { Insertable, Updatable, Deletable }
-    entity EmployeeSet as projection on master.employees;
+    entity EmployeeSet 
+    @(restrict: [ 
+    { grant: ['READ'], to: 'Viewer',
+      where: 'bankName = $user.BankName' },
+    ])
+    as projection on master.employees;
     @readonly
     entity AddressSet as projection on master.address;
 

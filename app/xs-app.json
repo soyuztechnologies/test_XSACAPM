@@ -1,18 +1,18 @@
 {
     "welcomeFile": "purchaseorderapp/webapp/",
-    "authenticationMethod": "none",
+    "authenticationMethod": "route",
     "routes": [
         { 
           "source": "^/purchaseorderapp/webapp/(.*)$", 
           "target": "$1",
           "csrfProtection": false,
-          "authenticationType": "none",
+          "authenticationType": "xsuaa",
           "localDir": "purchaseorderapp/webapp/" 
         }, 
         { 
           "source": "^/(.*)", 
           "csrfProtection": false,
-          "authenticationType": "none",
+          "authenticationType": "xsuaa",
           "destination": "srv-api" 
         } 
     ]

@@ -28,7 +28,7 @@ Content-Type: application/json
 
 
 ###Read Single Employee Which was just created
-GET http://localhost:4004/CatalogService/EmployeeSet
+GET http://localhost:4004/CatalogService/EmployeeSet/$count
 Authorization: Basic anubhav:
 
 ###Update the salary for the employee

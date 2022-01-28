@@ -33,7 +33,7 @@ modules:
           name: srv-api
           strictSSL: true
           forwardAuthToken: true
-          url: '~{srv-url}'  
+          url: '~{srv-url}'
 resources:
   - name: pocapapp-db
     type: com.sap.xs.hdi-container
