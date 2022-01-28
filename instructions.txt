@@ -149,3 +149,11 @@ entity EmployeeSet
     ])
     as projection on master.employees;    
             
++++++++++++++++++++++++++++Working with UAA Manually with POSTMAN
+1. Download the collection from project folder and import to your POSTMAN
+2. got to bas terminal - cf env project-srv
+3. Extract the client_id, url, client_secret from xsuaa env variable
+4. Replace all properties in POSTMAN Collection to derive XSUAA issued JWT Token
+5. Decode JWT to JSON from - https://codebeautify.org/base64-to-json-converter
+6. Take the access_token and pass to next call to -srv service in postman, under authortization = Bearer <token>
+7. Make get call            
