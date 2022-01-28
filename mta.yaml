@@ -8,6 +8,7 @@ modules:
     path: gen/srv
     requires:
       - name: pocapapp-db
+      - name: pocapapp-xsuaa
     provides:
       - name: srv-api
         properties:
@@ -34,6 +35,7 @@ modules:
           strictSSL: true
           forwardAuthToken: true
           url: '~{srv-url}'
+      - name: pocapapp-xsuaa
 resources:
   - name: pocapapp-db
     type: com.sap.xs.hdi-container
@@ -42,6 +44,12 @@ resources:
       service-plan: hdi-shared
     properties:
       hdi-service-name: '${service-name}'
+  - name: pocapapp-xsuaa
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security
 parameters:
   enable-parallel-deployments: true
 build-parameters:
