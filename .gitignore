@@ -13,3 +13,6 @@ mta_archives/pocapapp_1.0.2.mtar
 app/package-lock.json
 package-lock.json
 package-lock.json
+
+# auto generated wildcard
+pocapapp/gen/db/.env

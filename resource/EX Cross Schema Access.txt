@@ -1,0 +1,172 @@
+1. upload sflight schema
+2. Create user and grant per
+
+CREATE USER CUPS PASSWORD "Welcome1" SET PARAMETER CLIENT = '001' SET USERGROUP DEFAULT;
+ALTER USER CUPS DISABLE PASSWORD LIFETIME;
+GRANT SELECT ON SCHEMA SFLIGHT TO CUPS WITH GRANT OPTION;
+GRANT SELECT METADATA ON SCHEMA SFLIGHT to CUPS WITH GRANT OPTION;
+
+
+CREATE ROLE SF_C_ACCESS;
+GRANT SELECT, SELECT METADATA ON SCHEMA SFLIGHT TO SF_C_ACCESS WITH GRANT OPTION; 
+GRANT SF_C_ACCESS TO CUPS WITH AdMIN OPTION;
+
+3. create user provided service
+
+cf cups MY_SFLIGHT_SRV -p "{
+	\"user\":\"CUPS\",
+	\"password\":\"Welcome1\",
+	\"driver\":\"com.sap.db.jdbc.Driver\",
+	\"tags\":[\"hana\"],
+	\"schema\":\"SFLIGHT\"
+}"
+
+4. maintain MTA entry for ups
+
+  - name: cross-container-service
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: MY_CROSS_SRV
+    properties:
+      the-service-name: '${service-name}'
+
+
+5. maintain env variables 
+"user-provided": [{
+		"label": "user-provided",
+		"name": "MY_CROSS_SRV",
+		"tags": [],
+		"instance_name": "MY_CROSS_SRV",
+		"binding_name": null,
+		"credentials": {
+			"password": "Welcome1",
+			"schema": "SFLIGHT",
+			"tags": [
+				"hana"
+			],
+			"user": "CUPS",
+			"syslog_drain_url": "",
+			"volume_mounts": []
+		}
+	}]
+
+6. Add service replacement in env
+
+"SERVICE_REPLACEMENTS": [
+      {
+        "key": "ServiceName_1",
+        "service": "MY_CROSS_SRV"
+      }
+  ],
+
+7. copy default-env to db folder
+8. create .hdbgrants file in cfg folder
+
+{
+    "ServiceName_1": {
+      "object_owner" : {
+        "roles" : [
+          "SF_C_ACCESS"
+        ]
+      },
+      "application_user" : {
+        "roles" : [
+          "SF_C_ACCESS"
+        ]
+      }
+    }
+}
+
+9. Revert setting in package.hson to .
+and mta to db folder
+
+10. go to db folder and
+npm run start
+
+11. Create Synonum
+
+{
+    "SFLIGHT": {
+        "target":{
+            "object": "SFLIGHT",
+            "schema": "SFLIGHT"
+        }
+    }
+
+}
+
+12. Create HDB View on synonym - 
+
+VIEW "FLIGHTVIEW"
+AS select * from SFLIGHT
+with STRUCTURED PRIVILEGE CHECK;
+
+13. Create Structured Priviledge FLIGHT_VIEW_PRIVILEGE.structuredpriviledge
+
+STRUCTURED PRIVILEGE 
+    "FLIGHT_VIEW_PRIVILEGE"
+    FOR SELECT ON 
+    "FLIGHTVIEW"
+    WHERE "MANDT" = '001';
+
+14. Create Flight Schema Role
+
+{
+	"role":{
+		"name": "sflight",
+		"schema_analytic_privileges": [
+            {
+                "privileges":[ "FLIGHT_VIEW_PRIVILEGE" ]
+            }
+        ]
+	}
+}
+
+14. Create Admin Role for Schema and Strcutured Priviledge
+
+{
+	"role":{
+		"name": "admin",
+		"schema_privileges": [{
+		   "privileges": ["SELECT METADATA", 
+		    			  "SELECT CDS METADATA", 
+		    			  "SELECT", 
+		    			  "INSERT", 
+		    			  "EXECUTE", 
+		    			  "DELETE", 
+		    			  "UPDATE", 
+		    			  "DEBUG",
+		    			  "CREATE TEMPORARY TABLE"
+		   ]
+		}],
+		"schema_analytic_privileges": [
+            {
+                "privileges":[ "FLIGHT_VIEW_PRIVILEGE" ]
+            }
+        ]
+	}
+}
+
+15. Create a grantable role to everyone with # sign adminOwner
+
+{
+	"role":{
+		"name": "admin#",
+		"schema_roles": [{
+		 "names": ["admin"]
+		}] 
+	}
+}
+
+16. create defaults>default_access_role.hdbrole
+
+{
+	"role":{
+		"name": "default_access_role",
+		"schema_roles": [{
+		 "names": ["admin", "sflight"]
+		}] 
+	}
+}
+
+

@@ -24,6 +24,13 @@ modules:
       - name: pocapapp-db
     parameters:
       buildpack: nodejs_buildpack
+  - name: pocapapp-user-db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+      - name: pocapapp-user-db
+    parameters:
+      buildpack: nodejs_buildpack      
   - name: purchaseorder-ui
     type: nodejs
     path: app
@@ -44,12 +51,25 @@ resources:
       service-plan: hdi-shared
     properties:
       hdi-service-name: '${service-name}'
+  - name: pocapapp-user-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+    properties:
+      user-service-name: '${service-name}'      
   - name: pocapapp-xsuaa
     type: org.cloudfoundry.managed-service
     parameters:
       service: xsuaa
       service-plan: application
       path: ./xs-security.json
+  - name: cross-container-service
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: MY_SFLIGHT_SRV
+    properties:
+      the-service-name: '${service-name}'
 parameters:
   enable-parallel-deployments: true
 build-parameters:

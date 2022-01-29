@@ -54,7 +54,12 @@
     },
     "cds": {
         "build": {
-            "target": "./gen"
+            "target": "./gen",
+            "tasks": [
+                {"for":"hana", "src":"db", "options":{"model":["db","srv","app"]}},
+                {"for":"node-cf", "src":"srv", "options":{"model":["db","srv","app"]}},
+                {"for":"hana", "src":"user_db", "options":{"model":["user_db"]}}
+            ]
         },
         "requires": {
             "uaa": {
