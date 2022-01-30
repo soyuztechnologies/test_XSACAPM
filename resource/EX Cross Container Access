@@ -1,0 +1,75 @@
+**In this exercise we will create one more container using same project
+**Later we see how to access container2 inside container1
+
+**Phase 1: we will first create a new container with extra content
+
+1.1 Use HANA CLI to create a new user_db folder as new DB module
+hana-cli createModule -f user_db
+1.2  inside this folder, create usertable.cds under user_db
+
+using {cuid} from '@sap/cds/common';
+
+namespace![UserData];
+
+entity![User] : cuid {
+    ![FirstName] : String(40);
+    ![LastName]  : String(40);
+    ![Email]     : String(255);
+}
+
+annotate![User] with @(
+    title       : '{i18n>userService}',
+    description : '{i18n>userService}'
+) {
+    ID          @(
+        title       : '{i18n>user_id}',
+        description : '{i18n>user_id}',
+    );
+    ![FirstName]@title : '{i18n>fname}';
+    ![LastName] @title : '{i18n>lname}';
+    ![Email]    @title : '{i18n>email}'  @assert.format : '[\\w|-]+@\\w[\\w|-]*\\.[a-z]{2,3}';
+};
+
+1.3 we go to terminal and use the cd user_db > npm install
+1.4 We go to package.json @ projet level and add this to build configuration
+
+"build": {
+            "target": "./gen",
+            "tasks": [
+                {"for":"hana", "src":"db", "options":{"model":["db","srv","app"]}},
+                {"for":"node-cf", "src":"srv", "options":{"model":["db","srv","app"]}},
+                {"for":"hana", "src":"user_db", "options":{"model":["user_db"]}}
+            ]
+        },
+
+1.5 Now we create a new resource of type hdi container to create a new hdi container
+
+resources:
+  - name: pocapapp-user-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+    properties:
+      user-service-name: '${service-name}' 
+
+1.6 We add a db module in MTA filer which will use this resource as require and represent our new 
+    db module      
+    NOTE - always change the build path for new db module to gen/user_db
+
+  - name: pocapapp-user-db-deployer
+    type: hdb
+    path: gen/user_db
+    requires:
+      - name: pocapapp-user-db
+    parameters:
+      buildpack: nodejs_buildpack
+
+1.7 Now we goto project level and perform build and deployer
+1.8 You can test the new container for user-db, it should have the table
+1.9 Download the zip file where anubhav created some more db content for new container
+
+
+cds build --production && cds deploy --to hana
+
+**Phase 2: Perform cross container access

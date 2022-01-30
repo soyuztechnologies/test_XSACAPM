@@ -16,3 +16,9 @@ package-lock.json
 
 # auto generated wildcard
 pocapapp/gen/db/.env
+# auto generated wildcard
+pocapapp/gen/db/.env
+# auto generated wildcard
+pocapapp/gen/db/.env
+# auto generated wildcard
+pocapapp/gen/user_db/.env

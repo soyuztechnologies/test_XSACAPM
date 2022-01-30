@@ -26,7 +26,7 @@ modules:
       buildpack: nodejs_buildpack
   - name: pocapapp-user-db-deployer
     type: hdb
-    path: gen/db
+    path: gen/user_db
     requires:
       - name: pocapapp-user-db
     parameters:

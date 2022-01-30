@@ -3,7 +3,8 @@
     "CatalogService": {
       "@source": "CatalogService.cds",
       "kind": "service",
-      "@path": "/CatalogService"
+      "@path": "/CatalogService",
+      "@requires": "authenticated-user"
     },
     "CatalogService.sleep": {
       "kind": "function",
@@ -16,6 +17,16 @@
       "@Capabilities.Insertable": true,
       "@Capabilities.Updatable": true,
       "@Capabilities.Deletable": true,
+      "@restrict": [
+        {
+          "grant": [
+            "READ"
+          ],
+          "to": "Viewer",
+          "where": "bankName = $user.BankName",
+          "_where": "[{\"ref\":[\"bankName\"]},\"=\",{\"ref\":[\"$user\",\"BankName\"]}]"
+        }
+      ],
       "projection": {
         "from": {
           "ref": [
