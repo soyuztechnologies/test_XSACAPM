@@ -66,10 +66,17 @@ resources:
       buildpack: nodejs_buildpack
 
 1.7 Now we goto project level and perform build and deployer
-1.8 You can test the new container for user-db, it should have the table
-1.9 Download the zip file where anubhav created some more db content for new container
-
-
 cds build --production && cds deploy --to hana
+
+1.8 You can test the new container for user-db, it should have the table
+
+1.9 Download the zip file where anubhav created some more db content for new container
+Make sure you extract zip to local computer
+drag all folders inside user_db>src folder
+cds build --production && cds deploy --to hana
+
+1.10 A procedure initUser gets created in new container
+call the procedure and generate dummy records
+
 
 **Phase 2: Perform cross container access
