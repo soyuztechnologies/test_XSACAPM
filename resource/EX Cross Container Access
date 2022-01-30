@@ -116,7 +116,64 @@ add new entry
 		"service": "pocapapp-user-db"
 	}
 
-2.4 
+2.4 go to db>cfg, and create .hdbfgrants which will grant the user role of other container
+to current container design time and runtime users
+Since its a cross container, we also need to create synonymconfig
+
+2.4.1 user.hdbgrants file under db>cfg
+
+{
+    "hdi-user-service": {
+      "object_owner": {
+        "container_roles":["user#"]
+      },
+      "application_user": {
+        "container_roles":["user"]
+      }
+    } 
+ }
+
+ 2.4.2 and user.hdbsynonymconfig
+
+ {
+    "USERDATA_USER_LOCAL": {
+      "target": {
+        "object": "USERDATA_USER",
+        "grantor": "hdi-user-service"
+      }
+    },
+    "USER_DETAILS": {
+      "target": {
+        "object": "user.models::USER_DETAILS",
+        "grantor": "hdi-user-service"      
+      }
+    }
+  }
+
+2.5 We finally create synonum pointing to synonymconfig
+
+user.hdbsynonym
+
+{
+    "USERDATA_USER_LOCAL": {
+      "target": {
+        "object": "USERDATA_USER"
+      }
+    },
+    "USER_DETAILS": {
+      "target": {
+        "object": "user.models::USER_DETAILS"
+      }
+    }
+  }
+
+2.6 go to db folder in terminal
+
+npm start
+
+2.7 Testing of our synonym which access cross container views and table
+
+
 
 
 
